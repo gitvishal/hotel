@@ -95,7 +95,6 @@ class HotelImages(Images):
 		return self.image_type
 
 class Payment(models.Model):
-	payment_merchant_id = models.CharField(max_length=100)
 	transaction_id = models.CharField(max_length=100)
 	price = models.DecimalField(max_digits=10, decimal_places=2)
 	meta_data = JSONField()
