@@ -81,26 +81,8 @@ class HotelImagesViewSet(viewsets.ReadOnlyModelViewSet):
 	queryset = HotelImages.objects.all()
 	serializer_class = HotelImagesSerializer
 
-class ReservationViewSet(viewsets.ReadOnlyModelViewSet):
+class ReservationViewSet(viewsets.ModelViewSet):
 	queryset = Reservation.objects.all()
 	serializer_class = ReservationSerializer
-
-
-class BookingView(APIView):
-	pass
-	# authentication_classes = (authentication.TokenAuthentication,)
-	# permission_classes = (permissions.IsAuthenticated,)
-
-	# def post(self, request, format=None):
-	# 	res_serializer = ReservationSerializer(data=request.data)
-	# 	pay_serializer = PaymentSerializer(data=request.data)
-		
-		
-	# 	if res_serializer.is_valid() and pay_serializer.is_valid():
-	# 		token = Token,objects.get(key=request.data.get('token'))
-	# 		payment = pay_serializer.save() 
-	# 		res_serializer.save(created_by=created_by, payment=payment)
-	# 		return Response(res_serializer.data, status=status.HTTP_201_CREATED)
-
-	# 	error_serializer = res_serializer.errors or pay_serializer.errors or user_serializer.errors
-	# 	return Response(error_serializer, status=status.HTTP_400_BAD_REQUEST)
+	authentication_classes = (authentication.TokenAuthentication,)
+	permission_classes = (permissions.IsAuthenticated,)

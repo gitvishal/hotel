@@ -12,8 +12,6 @@ router.register(r'hotel', views.HotelViewSet, base_name='hotel')
 router.register(r'room-image', views.RoomImagesViewSet, base_name='room-image')
 router.register(r'hotel-image', views.HotelImagesViewSet, base_name='hotel-image')
 router.register(r'reservation', views.ReservationViewSet, base_name='reservation')
-# router.register(r'payment', views.PaymentViewSet, base_name='payment')
-
 
 urlpatterns = [
 	path('v1/', include(router.urls)),
@@ -21,7 +19,6 @@ urlpatterns = [
 	path('v1/type-<room_type>/', include(router.urls)),
 	path('v1/city-<city>/type-<room_type>/', include(router.urls)),
 	path('obtain-auth-token/', ObtainAuthToken.as_view(), name='obtain-auth-token'),
-	path('book/', views.BookingView.as_view(), name='hotel-book'),
 	path('city/', views.CityView.as_view(), name='city'),
 	path('room-type/', views.RoomTypeView.as_view(), name='room-type'),
 	path('last-reservation/<int:pk>/', views.LastReservation.as_view(), name='last-reservation'),
