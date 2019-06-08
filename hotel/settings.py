@@ -82,23 +82,23 @@ WSGI_APPLICATION = 'hotel.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.sqlite3',
-		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-	}
-}
-
 # DATABASES = {
 # 	'default': {
-# 		'ENGINE': 'django.db.backends.postgresql_psycopg2',
-# 		'NAME': 'hotel_api',
-# 		'USER': 'hotel_api',
-# 		'PASSWORD': 'P@ssw0rd',
-# 		'HOST': 'localhost',
-# 		'PORT': '',
+# 		'ENGINE': 'django.db.backends.sqlite3',
+# 		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 # 	}
 # }
+
+DATABASES = {
+	'default': {
+		'ENGINE': 'django.db.backends.postgresql_psycopg2',
+		'NAME': 'hotel_api',
+		'USER': 'hotel_api',
+		'PASSWORD': 'P@ssw0rd',
+		'HOST': 'localhost',
+		'PORT': '',
+	}
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -203,3 +203,8 @@ REST_FRAMEWORK = {
 	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
 }
+
+try:
+    from .local_settings import *
+except:
+    print("No local settings found.")
