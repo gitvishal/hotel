@@ -9,6 +9,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework import viewsets, permissions, authentication
 from datetime import timedelta
+from django.utils import timezone
 from django.db.models import Max
 from .models import *
 from .serializers import *
@@ -21,17 +22,21 @@ class CityView(View):
 		return JsonResponse(dict(filter(lambda x:x[0], Hotel.CITY_CHOICES)))
 
 class LastReservation(View):
-	def get(self, pk, *args, **kwargs):
+	def get(self, *args, **kwargs):
 		try:
-			room = Room.objects.get(pk=pk)
+			room = Room.objects.get(pk=kwargs['pk'])
 			last_checkout = Reservation.objects.filter(
 				room=room, 
 				status=Reservation.STATUS_COMPLETED
 			).aggregate(ckout=Max('check_out'))
-			return Response({'last_checkout':last_checkout['ckout'] + timedelta(hours=3)})
+			return JsonResponse({'last_checkout':(
+					last_checkout['ckout'] + timedelta(hours=3) if last_checkout['ckout'] 
+						else timezone.now() + timedelta(hours=3)
+					)
+				}
+			)
 		except Room.DoesNotExists as e:
-			return Response({"Error": "Field does not exists"}, status=status.HTTP_404_NOT_FOUND)
-
+			return JsonResponse({"Error": "Field does not exists"}, status=status.HTTP_404_NOT_FOUND)
 
 class RoomTypeView(View):
 	def get(self, *args, **kwargs):

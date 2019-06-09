@@ -45,7 +45,6 @@ INSTALLED_APPS = [
 	'phonenumber_field',
 	'ckeditor',
 	'api',
-	'merchant',
 ]
 
 MIDDLEWARE = [
@@ -145,7 +144,7 @@ MEDIA_URL = '/media/'
 ## as per the requirement you can change media root and static root
 MEDIA_ROOT = os.path.join(os.environ['HOME'], 'api-dir','media')
 STATIC_ROOT = os.path.join(os.environ['HOME'], 'api-dir','static')
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "hotel/static"), )
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "hotel", "static"), )
 
 # thumbnail
 THUMBNAIL_ALIASES = {

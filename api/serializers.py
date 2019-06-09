@@ -45,10 +45,12 @@ class HotelSerializer(serializers.HyperlinkedModelSerializer):
 		fields = '__all__'
 
 class PaymentSerializer(serializers.ModelSerializer):
+	payment_transaction_id = serializers.ReadOnlyField(source='transaction_id')
+	payment_price = serializers.ReadOnlyField(source='price')
 
 	class Meta:
 		model = Payment 
-		fields = ('meta_data',)
+		fields = ('meta_data','payment_transaction_id','payment_price',)
 
 class ReservationSerializer(serializers.ModelSerializer):
 	payment = PaymentSerializer()
@@ -61,7 +63,7 @@ class ReservationSerializer(serializers.ModelSerializer):
 		with transaction.atomic():
 			payment = Payment.objects.create(
 				transaction_id=uuid.uuid4().hex,
-				price=duration*room.price, 
+				price=duration.days*room.price, 
 				**payment
 			)
 			reservation = Reservation.objects.create(
@@ -90,4 +92,4 @@ class ReservationSerializer(serializers.ModelSerializer):
 	
 	class Meta:
 		model = Reservation 
-		exclude = ('created_by', )
+		exclude = ('created_on', 'updated_on' )
