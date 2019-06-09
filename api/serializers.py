@@ -48,24 +48,30 @@ class PaymentSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Payment 
-		fields = '__all__'
+		fields = ('meta_data',)
 
 class ReservationSerializer(serializers.ModelSerializer):
 	payment = PaymentSerializer()
 
 	def create(self, validated_data):
 		payment = validated_data.pop('payment')
+		room = validated_data['room']
+		duration = validated_data['check_out'] - validated_data['check_in']
 
 		with transaction.atomic():
-			payment = Payment.objects.create(**payment)
-			reservation = Reservation.objects.create(payment, **validated_data)
+			payment = Payment.objects.create(price=duration*room.price, **payment)
+			reservation = Reservation.objects.create(
+				payment=payment,
+				status=Reservation.STATUS_COMPLETED,
+				**validated_data
+			)
 
 		return reservation
 
 	def validate(self, attrs):
 		check_in = attrs.get('check_in')
 		check_out = attrs.get('check_out')
-		room = attrs.get('check_out')
+		room = attrs.get('room')
 
 		res = Reservation.objects.filter(
 			room=room, 
@@ -80,4 +86,4 @@ class ReservationSerializer(serializers.ModelSerializer):
 	
 	class Meta:
 		model = Reservation 
-		exclude = ('created_by', 'payment', )
+		exclude = ('created_by', )

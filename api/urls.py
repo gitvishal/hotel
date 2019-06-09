@@ -1,7 +1,5 @@
 from django.urls import path, include
 from rest_framework import routers
-from rest_framework.authtoken.views import ObtainAuthToken
-
 from . import views
 
 app_name = 'api'
@@ -18,7 +16,7 @@ urlpatterns = [
 	path('v1/city-<city>/', include(router.urls)),
 	path('v1/type-<room_type>/', include(router.urls)),
 	path('v1/city-<city>/type-<room_type>/', include(router.urls)),
-	path('obtain-auth-token/', ObtainAuthToken.as_view(), name='obtain-auth-token'),
+	path('obtain-auth-token/', views.HotelAuthToken.as_view(), name='obtain-auth-token'),
 	path('city/', views.CityView.as_view(), name='city'),
 	path('room-type/', views.RoomTypeView.as_view(), name='room-type'),
 	path('last-reservation/<int:pk>/', views.LastReservation.as_view(), name='last-reservation'),

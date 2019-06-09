@@ -105,10 +105,12 @@ class Payment(models.Model):
 class Reservation(models.Model):
 	STATUS_CANCELLED = 'cancelled'
 	STATUS_COMPLETED = 'completed'
+	STATUS_INPROCESS = 'inprocess'
 	PAYMENT_STATUS_CHOICES = (
 		(None, '---- Please choose status ----'),
 		(STATUS_CANCELLED, 'Cancelled'), 
 		(STATUS_COMPLETED, 'Completed'),
+		(STATUS_INPROCESS, 'InProcess'),
 	)
 
 	check_in = models.DateTimeField()
@@ -118,7 +120,7 @@ class Reservation(models.Model):
 	room = models.ForeignKey(Room, related_name='%(class)s_room', on_delete=models.CASCADE)
 	created_by = models.ForeignKey(User, related_name='%(class)s_by', on_delete=models.CASCADE)
 	payment = models.ForeignKey(Payment, related_name='%(class)s_payment', on_delete=models.CASCADE)
-	status = models.CharField(max_length=45, choices=PAYMENT_STATUS_CHOICES)
+	status = models.CharField(max_length=45, choices=PAYMENT_STATUS_CHOICES, default=STATUS_INPROCESS)
 	merchants_user_email = models.EmailField()
  
 
