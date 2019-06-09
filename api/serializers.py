@@ -59,7 +59,11 @@ class ReservationSerializer(serializers.ModelSerializer):
 		duration = validated_data['check_out'] - validated_data['check_in']
 
 		with transaction.atomic():
-			payment = Payment.objects.create(price=duration*room.price, **payment)
+			payment = Payment.objects.create(
+				transaction_id=uuid.uuid4().hex,
+				price=duration*room.price, 
+				**payment
+			)
 			reservation = Reservation.objects.create(
 				payment=payment,
 				status=Reservation.STATUS_COMPLETED,
